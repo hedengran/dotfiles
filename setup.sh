@@ -25,19 +25,18 @@ echo "Installing Git..."
 brew install git
 
 echo "Git config"
-read -p "Enter user.name:" name
-read -p "Enter user.email:" email
+read -p "Enter user.name: " name
+read -p "Enter user.email: " email
 
 git config --global user.name "$name"
 git config --global user.email $email
 
 echo "Installing brew stuff..."
 brew install gnupg
-brew install vim --with-override-system-vi
+brew install vim
 brew install grep
 brew install openssh
 brew install python
-brew install caskroom/cask/brew-cask
 
 echo "Installing dotfiles..."
 git clone git@github.com:hedengran/dotfiles.git ~/.dotfiles
@@ -49,7 +48,7 @@ brew install zsh
 chsh -s $(which zsh)
 
 apps=(
-    chrome
+    google-chrome
     thunderbird
     emacs
     iterm2
@@ -61,5 +60,4 @@ echo "installing apps with Cask..."
 brew cask install --appdir="/Applications" ${apps[@]}
 
 echo "Brew cleanup..."
-brew cask cleanup
 brew cleanup
