@@ -40,6 +40,8 @@ brew install python
 brew install caskroom/cask/brew-cask
 
 echo "Installing dotfiles..."
+git clone git@github.com:hedengran/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 ./dotfiles_install.sh
 
 echo "Installing zsh and setting as shell..."
