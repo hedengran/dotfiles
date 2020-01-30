@@ -1,0 +1,14 @@
+- defaults:
+    link:
+        create: true
+        relink: true
+
+- link:
+    ~/.vim: 
+        path: vim
+    ~/.vimrc: 
+        path: vimrc
+    ~/.zshrc: 
+        path: zshrc
+    ~/.emacs.d: 
+        path: emacs.d
