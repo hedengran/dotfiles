@@ -56,8 +56,8 @@ sudo ln -s ~/.dotfiles/wallpaper.jpg /System/Library/CoreServices/DefaultDesktop
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
 # Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 1
-defaults write NSGlobalDomain InitialKeyRepeat -int 10
+defaults write NSGlobalDomain KeyRepeat -int 15
+defaults write NSGlobalDomain InitialKeyRepeat -int 2
 
 # Set language and text formats
 # Note: if you’re in the US, replace `EUR` with `USD`, `Centimeters` with
@@ -79,7 +79,7 @@ defaults write com.apple.finder NewWindowTarget -string "PfLo"
 defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 
 # Don't show hard drive on desktop
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
 
 # Finder: show hidden files by default
 defaults write com.apple.finder AppleShowAllFiles -bool true
