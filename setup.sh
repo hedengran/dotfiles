@@ -59,5 +59,15 @@ apps=(
 echo "installing apps with Cask..."
 brew cask install --appdir="/Applications" ${apps[@]}
 
+echo "Setting iterm2 profile..."
+# Specify the preferences directory
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/dotfiles/iterm2"
+# Tell iTerm2 to use the custom preferences in the directory
+defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+
+
+echo "Setting macOS settings..."
+./macos.sh
+
 echo "Brew cleanup..."
 brew cleanup
