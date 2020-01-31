@@ -15,6 +15,7 @@ xcode-select --install
 if test ! $(which brew); then
   echo "Installing homebrew..."
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
 fi
 
 # Update homebrew recipes
@@ -55,6 +56,8 @@ apps=(
     thunderbird
     emacs
     iterm2
+    flux
+
 )
 
 # Install apps to /Applications
