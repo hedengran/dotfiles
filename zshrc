@@ -13,6 +13,8 @@ HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt hist_ignore_all_dups
+setopt inc_append_history #this...
+setopt share_history #...and this, will make history shared between terminals
 
 unsetopt beep
 # End of lines configured by zsh-newuser-install
