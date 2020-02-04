@@ -52,11 +52,13 @@ brew install zsh
 chsh -s $(which zsh)
 
 apps=(
-    google-chrome
+    firefox
+    chromium
     thunderbird
     emacs
     iterm2
     flux
+    bitwarden
 
 )
 
@@ -71,6 +73,8 @@ defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.dotfile
 # Tell iTerm2 to use the custom preferences in the directory
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
+echo "Setting emacs as editor..."
+export EDITOR="emacsclient"
 
 echo "Brew cleanup..."
 brew cleanup
