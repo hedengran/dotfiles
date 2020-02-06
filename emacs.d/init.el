@@ -28,6 +28,7 @@
 (setq user-full-name    "Gustav Hedengran"
       user-mail-address "gustav.hedengran@gmail.com")
 
+
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t) ; reload files edited else-where
 (global-set-key (kbd "C-x k") 'kill-this-buffer) ; default-kill this buffer
@@ -101,7 +102,8 @@
 
 (use-package dashboard
   :config
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  (setq dashboard-org-agenda-categories '("todo")))
 
 (use-package magit
   :config
@@ -111,31 +113,54 @@
   :config
   (flucui-themes-load-style 'light))
 
-;;(use-package nlinum-relative
-;;    :config
-;;    (nlinum-relative-setup-evil)
-;;    (setq nlinum-relative-current-symbol "0")
-;;    (add-hook 'prog-mode-hook 'nlinum-relative-mode))
-
 (use-package org)
-
 
 (use-package smartparens
   :config
   (progn
     (require 'smartparens-config)
-
     (show-paren-mode t)))
 
-;;;;;;;;;;;;;;;;;;;;
-;; HOL and SML
-;;;;;;;;;;;;;;;;;;;;
-(use-package sml-mode)
-(autoload 'hol "~/Documents/KTH/FDD3023/HOL/tools/hol-mode"
-  "Runs a HOL session in a comint window.
-   With a numeric prefix argument, runs it niced to that level
-   or at level 10 with a bare prefix. " t)
-;;;;;;;;;;;;;;;;;;;;
+(use-package neotree
+  :config
+  (global-set-key [f8] 'neotree-toggle)
+  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+  (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+  (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+  (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+  (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle))
+
+(use-package tabbar
+  :config
+  (evil-define-key 'normal tabbar-mode-map (kbd "C-p") 'tabbar-backward-tab)
+  (evil-define-key 'normal tabbar-mode-map (kbd "C-n") 'tabbar-forward-tab))
+
+(use-package elfeed
+  :config
+  (global-set-key (kbd "C-x w") 'elfeed)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "RET") 'elfeed-search-show-entry)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "TAB") 'elfeed-search-show-entry)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "b") 'elfeed-search-browse-url)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "g") 'elfeed-search-update--force)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "G") 'elfeed-search-fetch)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "q") 'elfeed-search-quit-window)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "u") 'elfeed-search-tag-all-unread)
+  (evil-define-key 'normal elfeed-search-mode-map (kbd "r") 'elfeed-search-untag-all-unread)
+  (evil-define-key 'normal elfeed-show-mode-map (kbd "q") 'elfeed-kill-buffer)
+  (evil-define-key 'normal elfeed-show-mode-map (kbd "b") 'elfeed-show-visit)
+  (setq-default elfeed-search-filter "@6-months-ago +unread")
+  (setq elfeed-feeds
+      '(("https://ben-evans.com/benedictevans?format=RSS" fin-tech)
+        ("https://annerambergs.wordpress.com/feed" politics law)
+        ("https://blog.codinghorror.com/rss/" general-tech)
+        ("https://blog.aaronbieber.com/posts/index.xml" general-tech)
+        ("https://blog.ploeh.dk/atom.xml" software)
+        ("https://www.xkcd.com/atom.xml" webcomic))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ending

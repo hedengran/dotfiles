@@ -38,6 +38,8 @@ brew install vim
 brew install grep
 brew install openssh
 brew install python
+brew install tree
+brew install python3
 
 echo "Installing dotfiles..."
 git clone git@github.com:hedengran/dotfiles.git ~/.dotfiles
@@ -59,7 +61,8 @@ apps=(
     iterm2
     flux
     bitwarden
-
+    nextcloud
+    gpg-suite
 )
 
 # Install apps to /Applications
