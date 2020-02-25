@@ -63,6 +63,9 @@ apps=(
     bitwarden
     nextcloud
     gpg-suite
+    mendeley-desktop
+    zotero
+    mactex
 )
 
 # Install apps to /Applications
