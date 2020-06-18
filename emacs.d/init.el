@@ -6,7 +6,8 @@
 ;; initial setup setup
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+; Run as server. Send new files to session with emacsclient -n
+(server-start)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; package setup
@@ -77,16 +78,12 @@
 (tool-bar-mode -1)
 (blink-cursor-mode -1)
 
+(global-visual-line-mode t)
                                         ; add
 (global-hl-line-mode +1)
 (when (version<= "26.0.50" emacs-version)
-  ;(add-hook 'prog-mode-hook 'global-display-line-numbers-mode))
   (add-hook 'prog-mode-hook 'global-linum-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Packages
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;
 (use-package evil
   :config
   ;(define-key evil-motion-state-map (kbd "U") 'undo-tree-redo)
@@ -96,6 +93,15 @@
   ;(define-key evil-motion-state-map (kbd "ESC") 'keyboard-quit)
   ;(define-key evil-motion-state-map (kbd "C-b") 'switch-to-buffer)
   (evil-mode 1))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Packages
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; HOL
+(load "~/Library/HOL/tools/hol-mode")
+(load "~/Library/HOL/tools/hol-unicode")
+(transient-mark-mode 1)
 
 (use-package ivy
   :config
@@ -126,15 +132,21 @@
   (flucui-themes-load-style 'light))
 
 (use-package ispell)
-(use-package flyspell)
+(use-package flyspell
+  :config
+  (setq ispell-program-name "/usr/local/bin/aspell")
+  (setq ispell-list-command "list"))
 
 (use-package org
   :config
   (add-hook 'org-mode-hook 'flyspell-mode))
 
+(use-package haskell-mode)
 
-
-(use-package olivetti)
+(use-package leetcode
+  :config
+  (evil-define-key 'normal leetcode--problems-mode-map (kbd "RET") #'leetcode-show-current-problem)
+)
 
 (use-package smartparens
   :config
@@ -183,7 +195,6 @@
           ("https://katarinastensson.com/feed/" general-tech politics)
           ("https://www.svtplay.se/babel/rss.xml" tv)
 	  ("https://www.emelieforsberg.com/feed/")
-	  ("https://bloggar.aftonbladet.se/samtidigtmedlindaskugge/feed/")
           ("https://www.svtplay.se/genre/k-special/rss.xml" tv)
           ("https://www.svtplay.se/pa-sparet/rss.xml" tv)
           ("https://www.xkcd.com/atom.xml" webcomic))))
@@ -192,16 +203,33 @@
 ;; Latex settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;(defun set-exec-path-from-shell-PATH ()
-  ;"Sets the exec-path to the same value used by the user shell"
-;  (let ((path-from-shell
-;         (replace-regexp-in-string
-;          "[[:space:]\n]*$" ""
-;          (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
-;    (setenv "PATH" path-from-shell)
-;    (setq exec-path (split-string path-from-shell path-separator))))
-;; call function now
-;(set-exec-path-from-shell-PATH)
+(use-package auctex
+  :defer t
+  :ensure t
+  :config
+  :init
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq font-latex-fontify-script nil)
+
+  (setq-default TeX-master nil)
+  (setq TeX-PDF-mode t); PDF mode (rather than DVI-mode)
+  (add-hook 'TeX-mode-hook 'flyspell-mode)
+  (add-hook 'teX-mode-hook 'turn-on-visual-line-mode)
+  (add-hook 'TeX-mode-hook
+	    (lambda () (TeX-fold-mode 1))))
+
+(use-package latex-preview-pane)
+
+(defun set-exec-path-from-shell-PATH ()
+  "Sets the exec-path to the same value used by the user shell"
+  (let ((path-from-shell
+         (replace-regexp-in-string
+          "[[:space:]\n]*$" ""
+          (shell-command-to-string "$SHELL -l -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+(set-exec-path-from-shell-PATH)
 
 
 ;(setq org-latex-pdf-process (list "latexmk -pdf %f"))
@@ -214,13 +242,13 @@
 ;                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
 ;                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
 ;                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-
-
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-(add-hook 'LaTeX-mode-hook #'outline-minor-mode)
+;
+;
+;(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+;(setq TeX-auto-save t)
+;(setq TeX-parse-self t)
+;(setq-default TeX-master nil)
+;(add-hook 'LaTeX-mode-hook #'outline-minor-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ending
