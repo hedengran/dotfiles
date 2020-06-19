@@ -34,3 +34,5 @@ chpwd() {
 
 NEWLINE=$'\n'
 PS1='┌─ %n@%M:%~${NEWLINE}└─ λ '
+
+alias es='emacsclient -n'

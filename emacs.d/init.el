@@ -84,6 +84,17 @@
 (when (version<= "26.0.50" emacs-version)
   (add-hook 'prog-mode-hook 'global-linum-mode))
 
+(defun my/q-to-dashboard ()
+  (interactive)
+  (unless (char-equal (elt (buffer-name) 0) ?*)
+   (kill-this-buffer))
+  (get-buffer-create "*dashboard*"))
+
+(defun my/wq-to-dashboard ()
+  (interactive)
+  (save-buffer)
+  (my/q-to-dashboard))
+
 (use-package evil
   :config
   ;(define-key evil-motion-state-map (kbd "U") 'undo-tree-redo)
@@ -92,7 +103,18 @@
   ;(define-key evil-motion-state-map (kbd "C-f") 'find-file)
   ;(define-key evil-motion-state-map (kbd "ESC") 'keyboard-quit)
   ;(define-key evil-motion-state-map (kbd "C-b") 'switch-to-buffer)
+
+  ;; :q should kill the current buffer rather than quitting emacs entirely
+  ;(evil-ex-define-cmd "wq" 'my/wq-to-dashboard)
+  (evil-ex-define-cmd "q" 'my/q-to-dashboard)
+  (evil-ex-define-cmd "wq" 'my/wq-to-dashboard)
+  ;; Need to type out :quit to close emacs
+  (evil-ex-define-cmd "quit" 'evil-quit)
   (evil-mode 1))
+
+;;;;;;;;;;;;;;;;;;;;
+;; 
+;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages
@@ -139,6 +161,7 @@
 
 (use-package org
   :config
+  (setq org-agenda-files '("~/Google Drive/org/"))
   (add-hook 'org-mode-hook 'flyspell-mode))
 
 (use-package haskell-mode)

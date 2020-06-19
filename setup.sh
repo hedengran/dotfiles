@@ -35,6 +35,7 @@ git config --global user.email $email
 echo "Installing brew stuff..."
 brew install gnupg
 brew install vim
+brew install git
 brew install grep
 brew install openssh
 brew install python
@@ -47,25 +48,24 @@ cd ~/.dotfiles
 ./dotfiles_install.sh
 
 echo "Setting macOS settings..."
-./macos.sh
+./macos_settings.sh
 
 echo "Installing zsh and setting as shell..."
 brew install zsh
 chsh -s $(which zsh)
 
 apps=(
-    firefox
-    chromium
-    thunderbird
-    emacs
-    iterm2
-    flux
     bitwarden
-    nextcloud
-    gpg-suite
-    mendeley-desktop
-    zotero
+    emacs
+    firefox
+    flux
+    intellij-idea-ce
+    iterm2
     mactex
+    mendeley-desktop
+    skim
+    slack
+    thunderbird
 )
 
 # Install apps to /Applications
