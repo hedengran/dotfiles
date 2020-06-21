@@ -121,9 +121,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; HOL
-(load "~/Library/HOL/tools/hol-mode")
-(load "~/Library/HOL/tools/hol-unicode")
-(transient-mark-mode 1)
+;(load "~/Library/HOL/tools/hol-mode")
+;(load "~/Library/HOL/tools/hol-unicode")
+;(transient-mark-mode 1)
 
 (use-package ivy
   :config
@@ -161,15 +161,10 @@
 
 (use-package org
   :config
-  (setq org-agenda-files '("~/Google Drive/org/"))
+  ;(setq org-agenda-files '("~/Google Drive/org/"))
   (add-hook 'org-mode-hook 'flyspell-mode))
 
 (use-package haskell-mode)
-
-(use-package leetcode
-  :config
-  (evil-define-key 'normal leetcode--problems-mode-map (kbd "RET") #'leetcode-show-current-problem)
-)
 
 (use-package smartparens
   :config
@@ -177,50 +172,10 @@
     (require 'smartparens-config)
     (show-paren-mode t)))
 
-(use-package neotree
-  :config
-  (global-set-key [f8] 'neotree-toggle)
-  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-  (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-  (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-  (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-  (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle))
-
 (use-package tabbar
   :config
   (evil-define-key 'normal tabbar-mode-map (kbd "C-p") 'tabbar-backward-tab)
   (evil-define-key 'normal tabbar-mode-map (kbd "C-n") 'tabbar-forward-tab))
-
-(use-package elfeed
-  :config
-  (global-set-key (kbd "C-x w") 'elfeed)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "RET") 'elfeed-search-show-entry)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "TAB") 'elfeed-search-show-entry)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "B") 'elfeed-search-browse-url)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "g") 'elfeed-search-update--force)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "G") 'elfeed-search-fetch)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "q") 'elfeed-search-quit-window)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "u") 'elfeed-search-tag-all-unread)
-  (evil-define-key 'normal elfeed-search-mode-map (kbd "r") 'elfeed-search-untag-all-unread)
-  (evil-define-key 'normal elfeed-show-mode-map (kbd "q") 'elfeed-kill-buffer)
-  (evil-define-key 'normal elfeed-show-mode-map (kbd "b") 'elfeed-show-visit)
-  (setq-default elfeed-search-filter "@6-months-ago +unread")
-  (setq elfeed-feeds
-        '(
-          ("https://ben-evans.com/benedictevans?format=RSS" fin-tech)
-          ("https://blog.codinghorror.com/rss/" general-tech)
-          ("https://blog.aaronbieber.com/posts/index.xml" general-tech)
-          ("https://blog.ploeh.dk/atom.xml" software)
-          ("https://katarinastensson.com/feed/" general-tech politics)
-          ("https://www.svtplay.se/babel/rss.xml" tv)
-	  ("https://www.emelieforsberg.com/feed/")
-          ("https://www.svtplay.se/genre/k-special/rss.xml" tv)
-          ("https://www.svtplay.se/pa-sparet/rss.xml" tv)
-          ("https://www.xkcd.com/atom.xml" webcomic))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Latex settings
