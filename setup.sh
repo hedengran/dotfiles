@@ -62,7 +62,6 @@ apps=(
     intellij-idea-ce
     iterm2
     mactex
-    mendeley-desktop
     skim
     slack
     thunderbird
