@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Ask for the administrator password upfront
+sudo -v
+
 echo "Creating a new SSH key..."
 ssh-keygen -t rsa
 
@@ -14,7 +17,7 @@ xcode-select --install
 # Install if we don't have it
 if test ! $(which brew); then
   echo "Installing homebrew..."
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 fi
 
@@ -35,7 +38,6 @@ git config --global user.email $email
 echo "Installing brew stuff..."
 brew install gnupg
 brew install vim
-brew install git
 brew install grep
 brew install openssh
 brew install python
@@ -49,10 +51,6 @@ cd ~/.dotfiles
 
 echo "Setting macOS settings..."
 ./macos_settings.sh
-
-echo "Installing zsh and setting as shell..."
-brew install zsh
-chsh -s $(which zsh)
 
 apps=(
     bitwarden
