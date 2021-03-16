@@ -121,9 +121,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; HOL
-;(load "~/Library/HOL/tools/hol-mode")
-;(load "~/Library/HOL/tools/hol-unicode")
-;(transient-mark-mode 1)
+(load "~/Library/HOL/tools/hol-mode")
+(load "~/Library/HOL/tools/hol-unicode")
+(transient-mark-mode 1)
 
 (use-package ivy
   :config

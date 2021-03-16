@@ -1,6 +1,6 @@
 "ALWAYS PUT A .vimrc FILE WITH COMMAND --- runtime vimrc
 
-    "define filetype pddl to lisp for syntax highlight
+"define filetype pddl to lisp for syntax highlight
 au BufRead,BufNewFile *.pddl set filetype=lisp
 
 "Basics
@@ -44,6 +44,8 @@ nnoremap <F5> "=strftime("%c")>CR>P
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
 
+nnoremap <C-P> :bprev<CR>
+
 "easier line navigation
 nnoremap <S-H> 0
 nnoremap <S-L> $
@@ -62,6 +64,9 @@ set incsearch
 set hlsearch
 set ignorecase
 nmap <silent> <BS>  :nohlsearch<CR>
+" // to search for highlighted text
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
 
 "--------------------Vundle begin settings
 "Vundle bootstrap
