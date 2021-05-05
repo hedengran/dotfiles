@@ -124,16 +124,13 @@ PROMPT='┌─ ${PWD/#$HOME/~} %{$fg[blue]%}%{$reset_color%}$(git_super_status)
 #    --color=info:#4271ae,prompt:#8959a8,pointer:#d7005f
 #    --color=marker:#4271ae,spinner:#4271ae,header:#4271ae'
 ############################ 
-############################ Neo4j
-
-NEO4J_VERSION="4.3.0"
-NEO4J_REPO="/Users/hedengran/repositories/neo4j/default"
-NEO4J_HOME="${NEO4J_REPO}/private/packaging/standalone/target/neo4j-enterprise-${NEO4J_VERSION}-SNAPSHOT-unix/neo4j-enterprise-${NEO4J_VERSION}-SNAPSHOT"
-
-############################ 
 ############################
+
+if [ -f ~/.zshrc.local ]; then
+    source ~/.zshrc.local
+fi
+
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/hedengran/.sdkman"
 [[ -s "/Users/hedengran/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/hedengran/.sdkman/bin/sdkman-init.sh"
-
