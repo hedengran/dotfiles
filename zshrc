@@ -42,67 +42,47 @@ alias ez='ec ~/.zshrc'
 alias sz='source ~/.zshrc'
 
 ############################ git
+gl_format_str="--pretty='format:%C(auto,yellow)%h %C(auto,blue)%>(30,trunc)%ad %C(auto,green)%<(20,trunc)%aN%C(auto,reset)%<(80,trunc)%s%C(auto,red)% gD% D'"
 alias g='git'
 alias gb='git branch'
 alias gbv='git branch -v'
 alias gbvv='git branch -vv'
 alias gco='git checkout'
 alias gp='git pull'
-alias gl='git log --pretty="format:%C(auto,yellow)%h %C(auto,blue)%>(30,trunc)%ad %C(auto,green)%<(20,trunc)%aN%C(auto,reset)%<(80,trunc)%s%C(auto,red)% gD% D"'
+alias gl="git log ${gl_format_str}"
 alias glg='git lg'
 alias gr='git remote'
 alias grv='git remote -vv'
 
-upstream_master="4.3"
+
+upstream_master() {
+    eval "git rev-parse --abbrev-ref HEAD | awk '{split(\$1, a, \"-\"); print a[1]}'"
+}
 
 ghlog() {
-    #upstream_master=$1
-
-    if [[ -z $upstream_master ]] then;
-       upstream_master=$(git remote show neo4j | grep "HEAD branch" | cut -d " " -f 5)
-    fi
-
-    eval "git log ${upstream_master}..HEAD --pretty='format:%C(auto,yellow)%h %C(auto,blue)%>(30,trunc)%ad %C(auto,green)%<(20,trunc)%aN%C(auto,reset)%<(80,trunc)%s%C(auto,red)% gD% D'"
+    value="neo4j/$(upstream_master)"
+    eval "git log ${value}..HEAD ${gl_format_str}"
 }
 
 ghdiff() {
-    #upstream_master=$1
-
-    if [[ -z $upstream_master ]] then;
-       upstream_master=$(git remote show neo4j | grep "HEAD branch" | cut -d " " -f 5)
-    fi
-    echo "Comparing ${upstream_master} to ${curr_branch}"
-    eval "git diff ${upstream_master}...HEAD"
+    value="neo4j/$(upstream_master)"
+    eval "git diff ${value}...HEAD"
 }
 
 ghdiffn() {
-    #upstream_master=$1
-
-    if [[ -z $upstream_master ]] then;
-       upstream_master=$(git remote show neo4j | grep "HEAD branch" | cut -d " " -f 5)
-    fi
-    echo "Comparing ${upstream_master} to ${curr_branch}"
-    eval "git diff --name-only ${upstream_master}...HEAD"
+    value="neo4j/$(upstream_master)"
+    eval "git diff --name-only ${value}...HEAD"
 }
 
 ghdiffo() {
-    #upstream_master=$1
-
-    if [[ -z $upstream_master ]] then;
-       upstream_master=$(git remote show neo4j | grep "HEAD branch" | cut -d " " -f 5)
-    fi
+    value="neo4j/$(upstream_master)"
     echo "Comparing ${curr_branch} to ${upstream_master}"
     eval "git diff --name-only HEAD...${upstream_master}"
 }
 
 ghri() {
-    #upstream_master=$1
-
-    if [[ -z $upstream_master ]] then;
-       upstream_master=$(git remote show neo4j | grep "HEAD branch" | cut -d " " -f 5)
-    fi
-
-    commit_n=$(ghlog $upstream_master | grep -c "^")
+    value="neo4j/$(upstream_master)"
+    commit_n=$(ghlog $value | grep -c "^")
     eval "git rebase -i HEAD~${commit_n}"
 }
 
