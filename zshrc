@@ -56,7 +56,12 @@ alias grv='git remote -vv'
 
 
 upstream_master() {
-    eval "git rev-parse --abbrev-ref HEAD | awk '{split(\$1, a, \"-\"); print a[1]}'"
+    branch=$(eval "git rev-parse --abbrev-ref HEAD | awk '{split(\$1, a, \"-\"); print a[1]}'")
+    if [ "$branch" = "4.4" ]; then
+        echo "dev"
+    else
+        echo $branch
+    fi
 }
 
 ghlog() {
