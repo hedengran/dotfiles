@@ -1,0 +1,476 @@
+#+TITLE: Literate Emacs Config
+#+AUTHOR: Gustav Hedengran
+
+* Bootstrap
+
+** Packages
+
+I'll be using straight.el, so avoid loading package.el.
+
+#+begin_src emacs-lisp
+  (setq package-enable-at-startup nil)
+#+end_src
+
+#+BEGIN_SRC emacs-lisp
+  ;; (setq package-archives '(("gnu" . "http://mirrors.163.com/elpa/gnu/")
+  ;; 			 ("melpa" . "https://melpa.org/packages/")
+  ;; 			 ("org" . "http://orgmode.org/elpa/")))
+#+END_SRC
+
+Bootstrap straight.el, the package manager.
+
+
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+#+end_src
+
+Let's enable the use-package macro for package management.
+
+#+begin_src emacs-lisp
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
+#+end_src
+
+* First thing first
+** Evil
+
+Evil-mode emulates Vim. Load this as fast as possible. In case configurations below break, at least I can navigate.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :init
+    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+    (setq evil-want-keybinding nil)
+    :config
+    (evil-mode 1)
+    (evil-set-initial-state 'NeoTree 'emacs)
+    (evil-set-undo-system 'undo-redo))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+#+END_SRC
+
+** GC
+
+GCMH, aka "the Garbage Collector Magic Hack" enforce "a sneaky Garbage Collection strategy to minimize GC interference with user activity. During normal use a high GC threshold is set. When idling GC is triggered and a low threshold is set."
+
+This package removes stuttering while scrolling.
+
+#+begin_src emacs-lisp
+  (use-package gcmh
+    :config
+    (gcmh-mode 1)
+  )
+#+end_src
+
+* Appearance
+
+A theme.
+
+#+begin_src emacs-lisp
+(use-package doom-themes
+  :config
+  ;; Global settings (defaults)
+  :config
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t  ; if nil, italics is universally disabled
+        doom-themes-treemacs-theme "doom-colors")
+  (load-theme 'doom-one t))
+#+end_src
+
+A custom modeline. However, with doom-modeline I experience laggy scrolling, so disabled for now.
+
+#+begin_src emacs-lisp
+ (use-package doom-modeline
+   :init (doom-modeline-mode 1)
+   :config
+   (setq inhibit-compacting-font-caches t
+         doom-modeline-vcs-max-length 64))
+#+end_src
+
+Nerd-icons are needed for above modeline.
+
+#+begin_src emacs-lisp
+(use-package nerd-icons)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package treemacs-nerd-icons
+  :after treemacs
+  :config
+  (treemacs-load-theme "nerd-icons"))
+#+end_src
+
+No need to see all ugly UI.
+
+#+begin_src emacs-lisp
+  (scroll-bar-mode -1)        ; Disable visible scrollbar
+  (tool-bar-mode -1)          ; Disable the toolbar
+  (tooltip-mode -1)           ; Disable tooltips
+  (menu-bar-mode 0)
+#+end_src
+
+* Preferences
+** General
+Use 'cmd' as meta key on macOS.
+
+#+BEGIN_SRC emacs-lisp
+  (setq mac-command-modifier 'meta
+    mac-option-modifier 'none)
+#+END_SRC
+
+Same copy-paste as everywhere else please.
+
+#+begin_src emacs-lisp
+ (global-set-key (kbd "M-v") 'yank)
+ (global-set-key (kbd "M-c") 'kill-ring-save)
+#+End_SRC
+
+Other general settings.
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)                        ; No startup message please.
+  ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit) ; Make ESC quit prompts, not needed when using evil-collection
+
+  ;; scrolling
+  (setq scroll-conservatively 101)                        ; Don't make big jumps when scrolling. Just follow along.
+  (setq scroll-margin 5)		                  ; Give a nice margin when scrolling outside current view.
+
+  ;; Flash modeline instead of visible bell or beep
+  (setq visible-bell nil
+      ring-bell-function 'flash-mode-line)
+  (defun flash-mode-line ()
+    (invert-face 'mode-line)
+    (run-with-timer 0.1 nil #'invert-face 'mode-line))
+#+end_src
+
+** Indentation
+
+#+BEGIN_SRC emacs-lisp
+  ;; (setq-default indent-tabs-mode nil)
+  ;; (setq-default tab-width 4)
+  ;; (setq indent-line-function 'insert-tab)
+#+END_SRC
+
+** Backup and configurations files
+
+#+begin_src emacs-lisp
+(use-package no-littering)
+
+;; no-littering doesn't set this by default so we must place
+;; auto save files in the same path as it uses for sessions
+(setq auto-save-file-name-transforms
+      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+#+end_src
+
+* Interface
+** Always
+
+Basics remove trailing whitespaces on save.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+** Getting help
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :defer 0
+    :diminish which-key-mode
+    :config
+    (which-key-mode)
+    (setq which-key-idle-delay 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package helpful
+    :commands (helpful-callable helpful-variable helpful-command helpful-key)
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-key] . helpful-key))
+#+end_src
+
+** Command completion
+
+`ivy` is a completion framework that use the +BEGIN_SRC.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :bind (("C-s" . swiper))
+    :config
+    (ivy-mode 1))
+#+END_SRC
+
+By default `ivy` starts filters with `^` which I really don't like.
+
+#+BEGIN_SRC emacs-lisp
+  (setq ivy-initial-inputs-alist nil)
+#+END_SRC
+
+`counsel` is a collection of `ivy` enchanced versions of common Emacs commands.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :bind (
+           ("M-x" . counsel-M-x)
+           ("C-M-p" . counsel-yank-pop)))
+#+END_SRC
+
+I want `ivy` to display documentation of functions.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+  :init
+  (ivy-rich-mode 1)
+  :config
+  (ivy-rich-project-root-cache-mode 1) ;; this is important, otherwise switching buffers is slow
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t))
+#+END_SRC
+
+* Coding
+
+** Basics
+
+When coding the editor should highlight parentheses.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :config
+    (add-hook 'prog-mode-hook 'smartparens-mode))
+#+END_SRC
+
+#+begin_src emacs-lisp
+  (column-number-mode)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+** Project
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :custom
+    ((projectile-completion-system 'ivy)
+      (projectile-project-search-path '(("~/repositories" . 1))))
+    :config
+    (projectile-mode 1))
+
+#+END_SRC
+
+#+begin_src emacs-lisp
+  (use-package treemacs)
+
+(use-package treemacs-evil
+  :after (treemacs evil))
+
+(use-package lsp-treemacs)
+
+(use-package treemacs-projectile
+  :after (treemacs projectile))
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once))
+
+(use-package treemacs-magit
+  :after (treemacs magit))
+#+end_src
+
+** Git
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind
+    ("C-c g" . magit-status)
+    :config
+    (setq magit-git-executable "/usr/bin/git"))
+#+END_SRC
+
+Display line changes in gutter based on git history.
+
+#+begin_src emacs-lisp
+  ;; (use-package git-gutter ; unmaintained
+  ;;   :config
+  ;;   (global-git-gutter-mode 't))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :hook ((magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
+           (magit-post-refresh-hook . diff-hl-magit-post-refresh))
+    :config
+    (global-diff-hl-mode 't)
+    (diff-hl-show-hunk-mouse-mode 't))
+#+end_src
+
+** Completion
+
+#+begin_src emacs-lisp
+  (use-package company
+    :config
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 1))
+#+end_src
+
+** Syntax check
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :config
+    (add-hook 'after-init-hook 'global-flycheck-mode)
+    (setq-default flycheck-highlighting-mode 'lines)
+    )
+#+END_SRC
+
+** Languages
+
+*** Golang
+
+#+begin_src emacs-lisp
+  (use-package go-mode
+  )
+
+  ;; TODO integrate into go-mode
+  (defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+#+end_src
+
+** LSP
+
+#+begin_src emacs-lisp
+   ;; (use-package eglot
+   ;;   :config
+   ;;   (add-to-list 'Eglot-server-programs '((cypher-mode) "cypher-language-server" "--stdio")))
+#+end_src
+
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+      :straight (
+	:type git
+	:host github
+	:repo "emacs-lsp/lsp-mode")
+      :hook (
+	     ((cypher-mode go-mode) . lsp-deferred)
+	     ;; if you want which-key integration
+	     (lsp-mode . lsp-enable-which-key-integration))
+      :init
+      (setq lsp-keymap-prefix "C-c l")
+      (setq lsp-semantic-tokens-enable t))
+
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package lsp-ui
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-doc-enable nil)
+    (setq lsp-ui-doc-header t)
+    (setq lsp-ui-doc-include-signature t)
+    (setq lsp-ui-doc-border (face-foreground 'default))
+    (setq lsp-ui-sideline-show-code-actions t)
+    (setq lsp-ui-sideline-delay 0.05))
+#+end_src
+
+* Workflow
+
+** Org mode
+
+#+BEGIN_SRC emacs-lisp
+  (defun efs/org-mode-setup ()
+    (org-indent-mode)
+    (visual-line-mode 1)) 		; wrap text
+
+  (use-package org
+    :straight nil
+    :hook (org-mode . efs/org-mode-setup)
+    :config
+    (setq org-ellipsis " ▾")
+    (setq org-directory (concat (getenv "HOME") "/notes/"))
+    (setq org-adapt-indentation nil)
+
+    (setq org-agenda-files '(
+      "~/Documents/org/"))
+
+    ;; src block indentation / editing / syntax highlighting
+    (setq org-src-fontify-natively t
+            org-src-strip-leading-and-trailing-blank-lines t
+            org-src-preserve-indentation t ;; do not put two spaces on the left
+            org-src-tab-acts-natively t
+            org-edit-src-content-indentation 0))
+#+END_SRC
+
+For org mode it's nice to get some visual padding.
+
+#+begin_src emacs-lisp
+  (defun efs/org-mode-visual-fill ()
+    (setq visual-fill-column-width 100
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode 1))
+
+  (use-package visual-fill-column
+    :hook (org-mode . efs/org-mode-visual-fill))
+#+end_src
+
+With org-tempo I can write "<s" followed by tab to insert structure templates.
+
+#+begin_src emacs-lisp
+  (use-package org-tempo
+           :straight nil
+           :config
+           (setq org-structure-template-alist '(
+                                                ("s" . "src")
+                                                ))
+           )
+#+end_src
+
+** Note taking and org-mode
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org-roam
+    :straight nil
+    :after org
+    :init (setq org-roam-v2-ack t) ;; Acknowledge V2 upgrade
+    :custom
+    (org-roam-directory (file-truename org-directory))
+    :config
+    (org-roam-setup)
+    :bind (("C-c n f" . org-roam-node-find)
+	   ("C-c n r" . org-roam-node-random)
+	   (:map org-mode-map
+		 (("C-c n i" . org-roam-node-insert)
+		  ("C-c n o" . org-id-get-create)
+		  ("C-c n t" . org-roam-tag-add)
+		  ("C-c n a" . org-roam-alias-add)
+		  ("C-c n l" . org-roam-buffer-toggle)))))
+
+
+#+END_SRC
+
+* Other
+
+#+BEGIN_SRC emacs-lisp
+#+END_SRC

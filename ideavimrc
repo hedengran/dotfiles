@@ -1,0 +1,40 @@
+################################################################################
+# Basics
+################################################################################
+# source ~/.vimrc
+
+" Remap multiple-cursors shortcuts to match terryma/vim-multiple-cursors
+nmap <C-n> <Plug>NextWholeOccurrence
+xmap <C-n> <Plug>NextWholeOccurrence
+nmap g<C-n> <Plug>NextOccurrence
+xmap g<C-n> <Plug>NextOccurrence
+nmap <C-x> <Plug>SkipOccurrence
+xmap <C-x> <Plug>SkipOccurrence
+nmap <C-p> <Plug>RemoveOccurrence
+xmap <C-p> <Plug>RemoveOccurrence
+
+################################################################################
+# Navigate source code
+################################################################################
+
+nnoremap [[ :action MethodUp<CR>
+nnoremap ]] :action MethodDown<CR>
+
+nnoremap zc :action CollapseRegion<CR>
+nnoremap zo :action ExpandRegion<CR>
+
+nnoremap <S-Space> :action GotoNextError<CR>
+
+nnoremap <leader>f :action FileStructurePopup<CR>
+
+################################################################################
+# Editing source code
+################################################################################
+
+nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+
+################################################################################
+# Navigating IDEA
+################################################################################
+
+nnoremap <leader>t :action ActivateTerminalToolWindow<CR>

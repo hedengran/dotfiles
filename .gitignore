@@ -1,0 +1,8 @@
+emacs.d/*
+*.local
+!emacs.d/init.el
+!emacs.d/configuration.org
+vim/bundle/*
+*.DS_Store
+vimrc_backup
+nvim/lazy-lock.json

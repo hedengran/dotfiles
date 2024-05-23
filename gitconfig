@@ -1,0 +1,22 @@
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+[core]
+  excludesfile = ~/.gitignore
+[diff]
+    algorithm = histogram
+[include]
+    path = ~/.gitconfig.local
+[merge]
+    conflictstyle = diff3
+[pull]
+    rebase = true
+[push]
+	autosetupremote = true
+    default = current
+[rebase]
+    autosquash = true
+[advice]
+	addIgnoredFile = false

@@ -1,0 +1,28 @@
+- defaults:
+    link:
+        create: true
+        relink: true
+
+- link:
+    ~/.vimrc: 
+        path: vimrc
+    ~/.ideavimrc: 
+        path: ideavimrc
+    ~/.zshrc: 
+        path: zshrc
+    ~/.zshrc.local: 
+        path: zshrc.local
+    ~/.tmux.conf: 
+        path: tmux.conf
+    ~/.emacs.d: 
+        path: emacs.d
+    ~/.m2/settings.xml: 
+        path: mvn_settings.xml
+    ~/.gitconfig:
+        path: gitconfig
+    ~/.gitignore:
+        path: gitignore
+    ~/.config/nvim:
+        path: nvim
+    ~/.config/wezterm:
+        path: wezterm
