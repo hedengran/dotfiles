@@ -14,8 +14,12 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 
 -- make
 -- in directory of file in current buffer
-vim.keymap.set("n", "<leader>mm", ':!make -C "%:h"<CR>')
-vim.keymap.set("n", "<leader>mt", ':!make -C "%:h" test<CR>')
+-- vim.keymap.set("n", "<leader>mt", vim.cmd("split term://make -C " .. vim.fn.expand("%:h") .. "test"))
+vim.keymap.set("n", "<leader>mt", function()
+	vim.cmd("split term://make -C" .. vim.fn.expand("%:h") .. " test")
+end)
+
+vim.keymap.set("n", "<leader>mm", ':Make -C "%:h"<CR>')
 -- globally
-vim.keymap.set("n", "<leader>mM", ":!make -C src<CR>")
-vim.keymap.set("n", "<leader>mT", ":!make -C src test<CR>")
+vim.keymap.set("n", "<leader>mM", ":Make -C src<CR>")
+vim.keymap.set("n", "<leader>mT", ":Make -C src test<CR>")

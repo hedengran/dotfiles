@@ -109,6 +109,30 @@ alias gl="git log ${gl_format_str}"
 alias glg='git lg'
 alias gr='git remote -vv'
 
+function gwa {
+  # Check if a branch name is provided as an argument
+  if [ -z "$1" ]; then
+    echo "Error: No branch name provided."
+    return 1
+  fi
+
+  branch_name="$1"
+
+  git fetch origin
+
+  worktree_dir="../$branch_name"
+
+  # Create the worktree with the given branch name
+  git worktree add "$worktree_dir" -b "ghedengran/$branch_name" origin/main --no-track 
+
+  # Provide feedback to the user
+  if [ $? -eq 0 ]; then
+    echo "Worktree '$branch_name' created at '$worktree_dir'."
+  else
+    echo "Failed to create worktree."
+  fi
+}
+
 ################################################################################
 # Prompt
 ################################################################################
@@ -140,6 +164,12 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
 ################################################################################
 # Kubernetes
 ################################################################################
+
+alias k='kubectl'
+
+# Kubectl krew plugin manager
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
 
 [[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
 [[ /usr/local/bin/minikube ]] && source <(minikube completion zsh)

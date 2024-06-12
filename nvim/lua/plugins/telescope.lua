@@ -77,7 +77,13 @@ return {
 						mappings = { -- extend mappings
 							i = {
 								["<C-k>"] = lga_actions.quote_prompt(),
-								["<C-i>"] = lga_actions.quote_prompt({ postfix = " -ig **//**" }),
+								-- ["<C-i>"] = function()
+								-- 	local pwd = vim.fn.expand("%:p:h")
+								-- 	lga_actions.quote_prompt({ postfix = " -ig **//**" })
+								-- end,
+								["<C-i>"] = lga_actions.quote_prompt({
+									postfix = " -ig **" .. vim.fn.expand("%:p:h") .. "/**",
+								}),
 							},
 						},
 					},
