@@ -33,11 +33,10 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 
 vim.opt.splitbelow = true
+vim.opt.splitright = true
 
 require("lazy").setup("plugins", {
 	change_detection = {
 		notify = false,
 	},
 })
-
-require("config")
