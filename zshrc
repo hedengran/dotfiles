@@ -108,6 +108,7 @@ alias gco='git checkout'
 alias gl="git log ${gl_format_str}"
 alias glg='git lg'
 alias gr='git remote -vv'
+alias gwl='git worktree list -vv'
 
 function gwa {
   # Check if a branch name is provided as an argument
@@ -118,12 +119,12 @@ function gwa {
 
   branch_name="$1"
 
-  git fetch origin
+  git fetch
 
   worktree_dir="../$branch_name"
 
   # Create the worktree with the given branch name
-  git worktree add "$worktree_dir" -b "ghedengran/$branch_name" origin/main --no-track 
+  git worktree add "$worktree_dir" -b "ghedengran/$branch_name" HEAD --no-track 
 
   # Provide feedback to the user
   if [ $? -eq 0 ]; then
@@ -201,3 +202,11 @@ fi
 
 # use docker-machine default for docker client
 # eval "$(docker-machine env default)"
+
+# pnpm
+export PNPM_HOME="/home/hedengran/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

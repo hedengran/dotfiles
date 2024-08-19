@@ -30,7 +30,7 @@ return {
 					end,
 					description = "Jump to the previous diagnostic",
 				},
-				{ "<leader>y", [["+y]], description = "Yank to clipboard" },
+				{ "<leader>y", { v = [["+y]] }, description = "Yank to clipboard", opts = { noremap = true } },
 
 				{
 					"<leader>mt",

@@ -19,7 +19,12 @@ return {
 			"lewis6991/gitsigns.nvim",
 		},
 		lazy = false,
-		config = true,
+		config = function()
+			require("mason").setup({
+				-- log_level = vim.log.levels.INFO,
+				log_level = vim.log.levels.DEBUG,
+			})
+		end,
 	},
 
 	-- Autocompletion

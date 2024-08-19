@@ -20,3 +20,5 @@
     autosquash = true
 [advice]
 	addIgnoredFile = false
+[init]
+	defaultBranch = main
