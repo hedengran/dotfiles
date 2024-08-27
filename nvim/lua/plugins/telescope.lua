@@ -57,6 +57,9 @@ return {
 						theme = "ivy",
 						file_ignore_patterns = {}, -- override defaults
 					},
+					lsp_references = {
+						include_declaration = false,
+					},
 				},
 				extensions = {
 					fzf = {

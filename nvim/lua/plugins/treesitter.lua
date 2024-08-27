@@ -6,7 +6,7 @@ return {
 		local configs = require("nvim-treesitter.configs")
 
 		configs.setup({
-			ensure_installed = { "lua", "go", "yaml", "make" },
+			ensure_installed = { "lua", "go", "yaml", "make", "bash" },
 			sync_install = false,
 			highlight = { enable = true },
 			indent = { enable = true },
