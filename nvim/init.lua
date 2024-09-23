@@ -35,6 +35,11 @@ vim.opt.signcolumn = "yes"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
+-- Ignore case if search for only lower case
+-- Respect case if including upper case in search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
 require("lazy").setup("plugins", {
 	change_detection = {
 		notify = false,

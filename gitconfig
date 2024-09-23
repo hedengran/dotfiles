@@ -22,3 +22,5 @@
 	addIgnoredFile = false
 [init]
 	defaultBranch = main
+[commit]
+	template = /home/hedengran/.gitmessage
