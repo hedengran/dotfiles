@@ -31,6 +31,7 @@ return {
 			-- }, -ig **/folder/** "word"
 			-- { "<leader>fS", "<cmd>Telescope lsp_workspace_symbols<cr>", desc = "Workspace symbols" },
 			{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+			{ "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume previous search" },
 			{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
 			{ "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Fuzzy find current buffer" },
 			{ "gr", "<cmd>Telescope lsp_references show_line=false<cr>", desc = "" },
@@ -93,7 +94,7 @@ return {
 				},
 				defaults = {
 					file_ignore_patterns = {
-						"bazel",
+						-- "bazel",
 						"node_modules",
 						"toolchain",
 						"src/vendor",

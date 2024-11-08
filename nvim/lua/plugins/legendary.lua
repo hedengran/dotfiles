@@ -56,6 +56,12 @@ return {
 					end,
 					description = "Open diagnostic float",
 				},
+				{
+					function()
+						vim.cmd("Git log -- %")
+					end,
+					description = "Git: show file history",
+				},
 			},
 		})
 	end,
